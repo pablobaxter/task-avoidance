@@ -17,10 +17,16 @@
  * https://github.com/pablobaxter/task-avoidance
  */
 
-import * as core from '@actions/core'
+package com.frybits.gradle
 
-export async function main(): Promise<void> {
-  core.info('Blah')
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
+import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
+
+class FrybitsMultiPlatformPlugin : Plugin<Project> {
+
+    override fun apply(target: Project) = target.run {
+        apply<KotlinMultiplatformPluginWrapper>()
+    }
 }
-
-main()

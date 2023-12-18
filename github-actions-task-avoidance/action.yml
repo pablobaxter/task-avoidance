@@ -8,6 +8,8 @@ inputs:
 outputs:
   affected-projects:
     description: 'List of projects affected'
+  affected-projects-raw:
+    description: 'Serialized output of SquareProjects'
 runs:
   using: 'node20'
   main: 'dist/main/index.js'

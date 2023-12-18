@@ -3,8 +3,26 @@ plugins {
     id("application")
 }
 
+application {
+    mainClass.set("com.frybits.project.provider.core.MainKt")
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes("Implementation-Version" to project.version)
+    }
+}
+
 kotlin {
-    jvm()
+    jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+        }
+        jvmToolchain {
+            languageVersion.set(JavaLanguageVersion.of(JavaVersion.VERSION_11.majorVersion))
+        }
+        withJava()
+    }
     sourceSets {
         jvmMain {
             dependencies {

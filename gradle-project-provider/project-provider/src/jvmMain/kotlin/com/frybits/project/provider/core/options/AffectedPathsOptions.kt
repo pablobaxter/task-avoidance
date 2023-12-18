@@ -1,41 +1,44 @@
-package com.frybits.task.avoidance.core.options
+/*
+ *  Copyright 2023 Pablo Baxter
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ * Created by Pablo Baxter (Github: pablobaxter)
+ * https://github.com/pablobaxter/task-avoidance
+ */
 
-import ch.qos.logback.classic.Level
-import ch.qos.logback.classic.Logger
-import com.frybits.task.avoidance.core.utils.LogBackLogLevelTypeConverter
-import org.slf4j.Logger.ROOT_LOGGER_NAME
-import org.slf4j.LoggerFactory
-import picocli.CommandLine
+package com.frybits.project.provider.core.options
+
+import picocli.CommandLine.Option
 import java.nio.file.Path
 import kotlin.io.path.Path
+import kotlin.io.path.absolute
 import kotlin.io.path.isDirectory
 
 /**
- * Configuration flags
+ * Configuration flags for Affected-Paths
  */
-@Suppress("unused")
-internal class TaskAvoidanceOptions {
+class AffectedPathsOptions {
 
-    @CommandLine.Option(
-        names = ["--logging"],
-        description = ["Logging level (OFF, FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL)"],
-        converter = [LogBackLogLevelTypeConverter::class],
-        defaultValue = "info"
-    )
-    private fun setLogLevel(level: Level) {
-        val logger = LoggerFactory.getLogger(ROOT_LOGGER_NAME) as Logger
-        logger.level = level
-    }
-
-    @CommandLine.Option(
+    @Option(
         names = ["--log-gradle"],
         description = ["Output Gradle logs"],
         fallbackValue = "true"
     )
-    var logGradle: Boolean = false
+    var logGradle: Boolean = true
         internal set
 
-    @CommandLine.Option(
+    @Option(
         names = ["--debug-gradle"],
         description = ["Makes the Gradle daemon used by TAPI debuggable"],
         fallbackValue = "true"
@@ -43,18 +46,19 @@ internal class TaskAvoidanceOptions {
     var debugGradle: Boolean = false
         internal set
 
-    @set:CommandLine.Option(
+    @set:Option(
         names = ["--dir"],
         description = ["Project directory"],
         defaultValue = "."
     )
-    var directory: Path = Path(".").toRealPath()
+    var directory: Path = Path(".").normalize().toRealPath()
         internal set(value) {
-            require(value.isDirectory()) { "Param --dir must point to a valid directory" }
-            field = value.toRealPath()
+            val p = value.normalize().toRealPath()
+            require(p.isDirectory()) { "Param --dir must point to a valid directory" }
+            field = p
         }
 
-    @set:CommandLine.Option(
+    @set:Option(
         names = ["--comparison-commit"],
         description = ["The commit hash to compare against for git diff"],
         defaultValue = ""
@@ -62,14 +66,14 @@ internal class TaskAvoidanceOptions {
     lateinit var comparisonCommit: String
         internal set
 
-    @CommandLine.Option(
+    @Option(
         names = ["--allow-gradle-parallel"],
         description = ["Allows parallel configuration of Gradle builds"],
     )
-    var allowGradleParallel: Boolean = false
+    var allowGradleParallel: Boolean = true
         internal set
 
-    @CommandLine.Option(
+    @Option(
         names = ["--gradle-initial-memory"],
         description = [
             "Sets the initial JVM memory size for Gradle daemon (in MB)",
@@ -79,7 +83,7 @@ internal class TaskAvoidanceOptions {
     var initialGradleMemory: Int? = null
         internal set
 
-    @CommandLine.Option(
+    @Option(
         names = ["--gradle-max-memory"],
         description = [
             "Sets the max JVM memory size for Gradle daemon (in MB)",
@@ -89,24 +93,45 @@ internal class TaskAvoidanceOptions {
     var maxGradleMemory: Int? = null
         internal set
 
-    @CommandLine.Option(
+    @Option(
         names = ["--inject-plugin"],
         description = ["Injects the \"com.squareup.tooling\" plugin to all projects in the build"]
     )
-    var autoInject: Boolean = false
+    var autoInject: Boolean = true
         internal set
 
-    @CommandLine.Option(
+    @Option(
         names = ["--changed-files"],
         description = ["List of changed files to use instead of the Git diff"]
     )
     var changedFiles: List<String> = emptyList()
         internal set
 
-    @CommandLine.Option(
+    @Option(
         names = ["--gradle-installation-path"],
         description = ["Use a custom Gradle installation"]
     )
     var gradleInstallationPath: Path? = null
+        internal set
+
+    @Option(
+        names = ["--gradle-jvm-options"],
+        description = ["List of Gradle JVM options to pass"]
+    )
+    var jvmOptions: List<String> = emptyList()
+        internal set
+
+    @Option(
+        names = ["--gradle-flags"],
+        description = ["List of Gradle flags to pass"]
+    )
+    var gradleFlags: List<String> = emptyList()
+        internal set
+
+    @Option(
+        names = ["--use-included-builds"],
+        description = ["Use the included builds as defined in the settings.gradle"]
+    )
+    var useIncludedBuilds: Boolean = false
         internal set
 }

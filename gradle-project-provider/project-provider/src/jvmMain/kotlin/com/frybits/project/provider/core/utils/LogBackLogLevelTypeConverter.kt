@@ -17,10 +17,14 @@
  * https://github.com/pablobaxter/task-avoidance
  */
 
-import * as core from '@actions/core'
+package com.frybits.project.provider.core.utils
 
-export async function main(): Promise<void> {
-  core.info('Blah')
+import ch.qos.logback.classic.Level
+import picocli.CommandLine
+
+internal class LogBackLogLevelTypeConverter : CommandLine.ITypeConverter<Level> {
+
+    override fun convert(value: String?): Level {
+        return Level.toLevel(value)
+    }
 }
-
-main()
