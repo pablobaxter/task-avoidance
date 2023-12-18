@@ -1,0 +1,44 @@
+{
+  "name": "github-actions-task-avoidance",
+  "version": "1.0.0",
+  "description": "Executes Gradle tasks on affected Gradle projects",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "compile": "ncc build src/index.ts --out dist/main --source-map --no-source-map-register"
+  },
+  "keywords": [
+    "github",
+    "actions",
+    "gradle",
+    "github-actions",
+    "avoidance",
+    "affected",
+    "affected-paths",
+    "task-avoidance"
+  ],
+  "author": "pablobaxter",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pablobaxter/task-avoidance.git"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@vercel/ncc": "0.38.1",
+    "eslint": "^8.56.0",
+    "eslint-config-standard-with-typescript": "^43.0.0",
+    "eslint-plugin-github": "^4.10.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.4.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "prettier": "3.1.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@actions/core": "^1.10.1"
+  }
+}

@@ -1,0 +1,43 @@
+[versions]
+kotlin = "1.9.21"
+kotlinDsl = "4.2.1"
+kotlinx = "1.7.3"
+
+picocli = "4.7.0"
+
+slf4j = "2.0.6"
+logback = "1.4.5"
+
+koin = "3.3.0"
+
+affected-paths = "0.1.2"
+
+[libraries]
+# Plugins
+
+## Kotlin
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-gradle-plugin-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx" }
+
+## Picocli
+picocli-core = { module = "info.picocli:picocli", version.ref = "picocli" }
+
+## Logging
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
+## Dependency Injector
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+
+## Affected-Paths
+affected-paths-core = { module = "com.squareup.affected.paths:affected-paths-core", version.ref = "affected-paths" }
+
+## Testing
+kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin" }
+
+[plugins]
+kotlin-plugin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-dsl = { id = "org.gradle.kotlin.kotlin-dsl", version.ref = "kotlinDsl" }

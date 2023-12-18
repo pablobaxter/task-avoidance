@@ -1,0 +1,16 @@
+name: 'Github Actions Gradle Task Avoidance'
+description: 'Configures Github Actions to perform Gradle tasks for Gradle projects that are affected'
+inputs:
+  gradle-tasks:
+    description: 'List of Gradle tasks for run for all affected projects'
+    required: true
+    default: 'check'
+outputs:
+  affected-projects:
+    description: 'List of projects affected'
+runs:
+  using: 'node20'
+  main: 'dist/main/index.js'
+branding:
+  icon: filter
+  color: green
