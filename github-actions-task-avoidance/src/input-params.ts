@@ -17,8 +17,8 @@
  * https://github.com/pablobaxter/task-avoidance
  */
 
-export async function main(): Promise<void> {
-  
-}
+import * as core from '@actions/core'
 
-main()
+export function getGradleTasks(): string[] {
+  return core.getMultilineInput('gradle-tasks')
+}

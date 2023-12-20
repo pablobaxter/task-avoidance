@@ -19,20 +19,29 @@
 
 package com.frybits.project.provider.core.commands
 
+import com.frybits.project.provider.core.di.affectedPathsModule
+import com.frybits.project.provider.core.di.optionsModule
 import com.frybits.project.provider.core.options.AffectedPathsOptions
 import com.frybits.project.provider.core.options.ProjectProviderOptions
 import com.frybits.project.provider.core.utils.VersionProvider
-import com.frybits.project.provider.core.utils.toCoreOptions
 import com.squareup.affected.paths.core.CoreAnalyzer
 import com.squareup.affected.paths.core.models.AnalysisResult
 import com.squareup.affected.paths.core.utils.AffectedPathsMessage
 import com.squareup.tooling.models.SquareProject
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import org.koin.core.KoinApplication
+import org.koin.core.context.GlobalContext
+import org.koin.core.context.startKoin
 import org.slf4j.LoggerFactory
 import picocli.CommandLine
 import java.io.PrintWriter
 import java.util.concurrent.Callable
-import kotlin.io.path.*
+import kotlin.io.path.bufferedWriter
+import kotlin.io.path.createParentDirectories
 
 private val LOGGER = LoggerFactory.getLogger(ProjectProviderCommand::class.java)
 
@@ -40,7 +49,7 @@ private val LOGGER = LoggerFactory.getLogger(ProjectProviderCommand::class.java)
     name = "project-provider",
     mixinStandardHelpOptions = true,
     versionProvider = VersionProvider::class,
-    description = ["Performs the necessary avoidance task"],
+    description = ["Provides information on paths that are affected by the given changes"],
     scope = CommandLine.ScopeType.INHERIT
 )
 internal class ProjectProviderCommand : Callable<Int> {
@@ -54,32 +63,41 @@ internal class ProjectProviderCommand : Callable<Int> {
     @CommandLine.Mixin
     private val projectProviderOptions = ProjectProviderOptions()
 
-    private val coreAnalyzer by lazy { CoreAnalyzer(affectedPathsOptions.toCoreOptions()) }
+    private val projectProviderApplication by lazy {
+        val app = GlobalContext.getKoinApplicationOrNull() ?: startKoin(KoinApplication.init())
+        return@lazy app.modules(
+            optionsModule(affectedPathsOptions, projectProviderOptions),
+            affectedPathsModule()
+        )
+    }
 
     override fun call(): Int {
-        try {
-            return runBlocking {
-                val analysisResultAsync = async {
-                    LOGGER.info("Awaiting analysis results")
-                    val result = coreAnalyzer.analyze()
-                    LOGGER.info("Analysis results received")
-                    return@async result
+        return with(projectProviderApplication) {
+            try {
+                return@with runBlocking {
+                    val analysisResultAsync = async {
+                        LOGGER.info("Awaiting analysis results")
+                        val result = koin.get<CoreAnalyzer>().analyze()
+                        LOGGER.info("Analysis results received")
+                        return@async result
+                    }
+
+                    val affectedProjectsAsync =
+                        async { determineProjectPathsAffectedBySources(analysisResultAsync.await()) }
+
+                    launch { writeProjectPaths(affectedProjectsAsync.await()) }
+
+                    return@runBlocking 0
                 }
-
-                val affectedProjectsAsync = async { determineProjectPathsAffectedBySources(analysisResultAsync.await()) }
-
-                launch { writeProjectPaths(affectedProjectsAsync.await()) }
-
-                return@runBlocking 0
+            } catch (e: Throwable) {
+                if (e is AffectedPathsMessage) {
+                    LOGGER.error(e.message)
+                    return@with AffectedPathsMessage.AFFECTED_PATHS_ERROR_CODE
+                } else {
+                    LOGGER.error("Unable to complete analysis", e)
+                }
+                return@with spec.exitCodeOnExecutionException()
             }
-        } catch (e: Throwable) {
-            if (e is AffectedPathsMessage) {
-                LOGGER.error(e.message)
-                return AffectedPathsMessage.AFFECTED_PATHS_ERROR_CODE
-            } else {
-                LOGGER.error("Unable to complete analysis", e)
-            }
-            return spec.exitCodeOnExecutionException()
         }
     }
 

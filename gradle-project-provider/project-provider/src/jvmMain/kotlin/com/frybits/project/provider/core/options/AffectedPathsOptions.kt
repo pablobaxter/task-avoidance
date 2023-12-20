@@ -48,7 +48,7 @@ class AffectedPathsOptions {
 
     @set:Option(
         names = ["--dir"],
-        description = ["Project directory"],
+        description = ["Gradle build directory"],
         defaultValue = "."
     )
     var directory: Path = Path(".").normalize().toRealPath()
@@ -97,7 +97,7 @@ class AffectedPathsOptions {
         names = ["--inject-plugin"],
         description = ["Injects the \"com.squareup.tooling\" plugin to all projects in the build"]
     )
-    var autoInject: Boolean = true
+    var autoInject: Boolean = false
         internal set
 
     @Option(

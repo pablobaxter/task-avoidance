@@ -17,8 +17,8 @@
  * https://github.com/pablobaxter/task-avoidance
  */
 
-export async function main(): Promise<void> {
-  
-}
+import * as exec from '@actions/exec'
 
-main()
+export async function runGradleTasks(tasks: string[]): Promise<void> {
+  const status: number = await exec.exec()
+}

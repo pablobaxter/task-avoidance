@@ -7,6 +7,7 @@ dependencies {
     implementation(gradleApi())
     implementation(gradleKotlinDsl())
     implementation(libs.kotlin.gradle.plugin)
+    implementation(libs.shadow.jar.plugin)
 }
 
 gradlePlugin {

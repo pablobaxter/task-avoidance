@@ -26,7 +26,7 @@ import org.slf4j.Logger.ROOT_LOGGER_NAME
 import org.slf4j.LoggerFactory
 import picocli.CommandLine.Option
 import java.nio.file.Path
-import kotlin.io.path.*
+import kotlin.io.path.Path
 
 /**
  * Configuration flags for Project-Provider

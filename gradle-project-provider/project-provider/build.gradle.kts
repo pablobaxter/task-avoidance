@@ -1,6 +1,5 @@
 plugins {
     id("frybits-mpp")
-    id("application")
 }
 
 application {
@@ -27,11 +26,12 @@ kotlin {
         jvmMain {
             dependencies {
                 implementation(libs.affected.paths.core)
-                implementation(libs.picocli.core)
+                implementation(libs.koin.core)
+                implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.logback.classic)
                 implementation(libs.logback.core)
+                implementation(libs.picocli.core)
                 implementation(libs.slf4j.api)
-                implementation(libs.kotlinx.coroutines.core)
             }
         }
     }
