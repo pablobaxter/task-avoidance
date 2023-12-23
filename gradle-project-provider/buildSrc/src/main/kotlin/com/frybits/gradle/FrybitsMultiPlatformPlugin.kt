@@ -25,11 +25,13 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
 import org.gradle.kotlin.dsl.apply
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
+import org.jetbrains.kotlinx.serialization.gradle.SerializationGradleSubplugin
 
 class FrybitsMultiPlatformPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = target.run {
         apply<KotlinMultiplatformPluginWrapper>()
+        apply<SerializationGradleSubplugin>()
         apply<ApplicationPlugin>()
         apply<ShadowPlugin>()
     }

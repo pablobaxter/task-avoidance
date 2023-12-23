@@ -33,6 +33,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.encodeToStream
 import org.koin.core.KoinApplication
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
@@ -42,6 +44,7 @@ import java.io.PrintWriter
 import java.util.concurrent.Callable
 import kotlin.io.path.bufferedWriter
 import kotlin.io.path.createParentDirectories
+import kotlin.io.path.outputStream
 
 private val LOGGER = LoggerFactory.getLogger(ProjectProviderCommand::class.java)
 
@@ -86,6 +89,7 @@ internal class ProjectProviderCommand : Callable<Int> {
                         async { determineProjectPathsAffectedBySources(analysisResultAsync.await()) }
 
                     launch { writeProjectPaths(affectedProjectsAsync.await()) }
+                    launch { writeSerializedProjects(analysisResultAsync.await()) }
 
                     return@runBlocking 0
                 }
@@ -136,6 +140,18 @@ internal class ProjectProviderCommand : Callable<Int> {
                         writer.println(projectPath)
                     }
                 writer.flush()
+            }
+        }
+    }
+
+    private suspend fun writeSerializedProjects(analysisResult: AnalysisResult) {
+        withContext(Dispatchers.IO) {
+            val serializedProjectsPath = projectProviderOptions.serializedProjectsOutput.normalize().createParentDirectories()
+            val json = projectProviderApplication.koin.get<Json>()
+            LOGGER.info("Writing provided projects to $serializedProjectsPath")
+            serializedProjectsPath.outputStream().buffered().use { bufferedStream ->
+                json.encodeToStream(analysisResult.projectMap, bufferedStream)
+                bufferedStream.flush()
             }
         }
     }

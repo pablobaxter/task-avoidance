@@ -50,4 +50,12 @@ internal class ProjectProviderOptions {
         description = ["File to output affected project paths"]
     )
     var affectedPathsOutput: Path = Path("affected-projects.out")
+        internal set
+
+    @Option(
+        names = ["--serialized-projects-output"],
+        description = ["File to output serialized projects"]
+    )
+    var serializedProjectsOutput: Path = Path("raw-serialized-projects.out")
+        internal set
 }

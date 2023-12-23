@@ -28,6 +28,7 @@ kotlin {
                 implementation(libs.affected.paths.core)
                 implementation(libs.koin.core)
                 implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.serialization.json)
                 implementation(libs.logback.classic)
                 implementation(libs.logback.core)
                 implementation(libs.picocli.core)

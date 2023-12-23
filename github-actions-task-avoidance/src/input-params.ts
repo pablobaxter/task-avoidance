@@ -22,3 +22,35 @@ import * as core from '@actions/core'
 export function getGradleTasks(): string[] {
   return core.getMultilineInput('gradle-tasks')
 }
+
+export function isAutoInjectDisabled(): boolean {
+  return core.getBooleanInput('disable-plugin-inject')
+}
+
+export function isGradleLoggingDisabled(): boolean {
+  return core.getBooleanInput('disable-gradle-logging')
+}
+
+export function getBuildDir(): string {
+  return core.getInput('build-dir')
+}
+
+export function getComparisonCommit(): string {
+  return core.getInput('comparison-commit')
+}
+
+export function isGradleParallelDisabled(): boolean {
+  return core.getBooleanInput('disable-gradle-parallel')
+}
+
+export function getChangedFiles(): string[] {
+  return core.getMultilineInput('changed-files')
+}
+
+export function getGradleInstallationPath(): string {
+  return core.getInput('gradle-installation-path')
+}
+
+export function useIncludedBuilds(): boolean {
+  return core.getBooleanInput('use-included-builds')
+}

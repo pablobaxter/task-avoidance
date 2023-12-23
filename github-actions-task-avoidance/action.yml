@@ -1,18 +1,52 @@
 name: 'Github Actions Gradle Task Avoidance'
 description: 'Configures Github Actions to perform Gradle tasks for Gradle projects that are affected'
+
 inputs:
   gradle-tasks:
-    description: 'List of Gradle task names to run for all affected projects'
+    description: List of Gradle task names to run for all affected projects
     required: true
     default: 'check'
+
+  # affected-paths related flags
+  disable-plugin-inject:
+    description: Disables automatic injection of the `com.squareup.tooling` Gradle plugin
+    required: false
+    default: 'false'
+  disable-gradle-logging:
+    description: Disabled logging of Gradle output
+    required: false
+    default: 'false'
+  build-dir:
+    description: Gradle build directory
+    required: false
+  comparison-commit:
+    description: Commit to compare current HEAD against
+    required: false
+  disable-gradle-parallel:
+    description: Disables parallel configuration of the Gradle build
+    required: false
+    default: 'false'
+  changed-files:
+    description: List of changed files to pass to Project Provider. This overrides the default git diff logic.
+    required: false
+  gradle-installation-path:
+    description: Path to Gradle installation. For cases where the Gradle wrapper is not used.
+    required: false
+  use-included-builds:
+    description: Use the included builds defined in the 'settings.gradle' files
+    required: false
+    default: 'false'
+
 outputs:
   affected-projects:
-    description: 'List of projects affected'
-  affected-projects-raw:
-    description: 'Serialized output of SquareProjects'
+    description: List of projects affected
+  raw-projects-json:
+    description: Serialized JSON output of SquareProjects
+
 runs:
   using: 'node20'
   main: 'dist/main/index.js'
+
 branding:
-  icon: filter
-  color: green
+  icon: 'filter'
+  color: 'green'
