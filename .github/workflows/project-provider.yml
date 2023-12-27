@@ -20,7 +20,9 @@ jobs:
           build-root-directory: gradle-project-provider
       
       - name: Execute Installation Build
-        run: ./gradlew :project-provider:shadowDistTar
+        run: |
+          cd gradle-project-provider
+          ./gradlew :project-provider:shadowDistTar
 
       - name: Releasing jar
         uses: softprops/action-gh-release@v1
