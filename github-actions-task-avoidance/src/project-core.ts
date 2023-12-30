@@ -18,6 +18,7 @@
  */
 
 import * as core from '@actions/core'
+import fs from 'fs'
 
 export function getGradleTasks(): string[] {
   return core.getMultilineInput('gradle-tasks')
@@ -53,4 +54,30 @@ export function getGradleInstallationPath(): string {
 
 export function useIncludedBuilds(): boolean {
   return core.getBooleanInput('use-included-builds')
+}
+
+export function getToken(): string {
+  return core.getInput('token')
+}
+
+export function getProjectProviderVersion(): string {
+  return core.getInput('project-provider-version')
+}
+
+export function getAffectedProjectsOutputFile(): string {
+  return core.getInput('affected-projects-output-file')
+}
+
+export function getSerializedProjectsOutputFile(): string {
+  return core.getInput('serialized-projects-output-file')
+}
+
+export function setAffectedProjectsOutput(): void {
+  const affectedProjectsOutputFile = getAffectedProjectsOutputFile() ?? 'affected-projects.out'
+  if (fs.existsSync(affectedProjectsOutputFile) && fs.lstatSync(affectedProjectsOutputFile).isFile()) {
+    const affectedProjectsList = fs.readFileSync(affectedProjectsOutputFile, 'utf-8').split('\r\n').join(',')
+    core.setOutput('affected-projects', affectedProjectsList)
+  } else {
+    throw new Error(`Path ${affectedProjectsOutputFile} does not exist or is not a file`)
+  }
 }

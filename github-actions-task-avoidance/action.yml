@@ -6,6 +6,12 @@ inputs:
     description: List of Gradle task names to run for all affected projects
     required: true
     default: 'check'
+  token:
+    description: Github token to use
+    required: false
+  project-provider-version:
+    description: Version of the project-provider tool to use
+    required: false
 
   # affected-paths related flags
   disable-plugin-inject:

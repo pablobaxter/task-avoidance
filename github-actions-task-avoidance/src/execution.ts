@@ -24,11 +24,14 @@
  * Source: https://github.com/gradle/gradle-build-action
  */
 
-import * as core from '@actions/core'
 import * as exec from '@actions/exec'
 import * as gradlew from './gradlew'
 
-export async function executeGradleBuild(executable: string | undefined, root: string, args: string[]): Promise<void> {
+export async function executeGradleBuild(
+  executable: string | undefined,
+  root: string,
+  args: string[]
+): Promise<number> {
   // Use the provided executable, or look for a Gradle wrapper script to run
   const toExecute = executable ?? gradlew.gradleWrapperScript(root)
 
@@ -37,7 +40,5 @@ export async function executeGradleBuild(executable: string | undefined, root: s
     ignoreReturnCode: true
   })
 
-  if (status !== 0) {
-    core.setFailed(`Gradle build failed: see console output for details`)
-  }
+  return status
 }
