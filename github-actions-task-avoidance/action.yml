@@ -42,12 +42,16 @@ inputs:
     description: Use the included builds defined in the 'settings.gradle' files
     required: false
     default: 'false'
+  affected-projects-output-file:
+    description: File to write affected projects list
+    required: false
+  serialized-projects-output-file:
+    description: File to write serialized projects
+    required: false
 
 outputs:
   affected-projects:
     description: List of projects affected
-  raw-projects-json:
-    description: Serialized JSON output of SquareProjects
 
 runs:
   using: 'node20'
