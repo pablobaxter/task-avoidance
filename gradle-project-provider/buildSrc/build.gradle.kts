@@ -8,7 +8,6 @@ dependencies {
     implementation(gradleKotlinDsl())
     implementation(libs.kotlin.gradle.plugin)
     implementation(libs.kotlinx.serialization.plugin)
-    implementation(libs.shadow.jar.plugin)
 }
 
 gradlePlugin {

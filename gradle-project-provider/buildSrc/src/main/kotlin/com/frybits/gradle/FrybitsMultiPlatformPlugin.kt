@@ -19,11 +19,13 @@
 
 package com.frybits.gradle
 
-import com.github.jengelman.gradle.plugins.shadow.ShadowPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
+import org.gradle.api.tasks.bundling.Compression
+import org.gradle.api.tasks.bundling.Tar
 import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlinx.serialization.gradle.SerializationGradleSubplugin
 
@@ -33,6 +35,12 @@ class FrybitsMultiPlatformPlugin : Plugin<Project> {
         apply<KotlinMultiplatformPluginWrapper>()
         apply<SerializationGradleSubplugin>()
         apply<ApplicationPlugin>()
-        apply<ShadowPlugin>()
+        setupTarCompression()
+    }
+
+    private fun Project.setupTarCompression() {
+        tasks.withType<Tar> {
+            compression = Compression.GZIP
+        }
     }
 }

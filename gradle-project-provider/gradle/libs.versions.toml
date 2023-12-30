@@ -13,13 +13,8 @@ koin = "3.3.0"
 
 affected-paths = "0.1.2"
 
-shadowjar = "8.1.1"
-
 [libraries]
 # Plugins
-
-## Shadow
-shadow-jar-plugin = { module = "com.github.johnrengelman:shadow", version.ref = "shadowjar" }
 
 ## Kotlin
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -29,7 +24,6 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-serialization-plugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin"}
-
 
 # Picocli
 picocli-core = { module = "info.picocli:picocli", version.ref = "picocli" }

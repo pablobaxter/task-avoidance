@@ -22,7 +22,6 @@ package com.frybits.project.provider.core.options
 import picocli.CommandLine.Option
 import java.nio.file.Path
 import kotlin.io.path.Path
-import kotlin.io.path.absolute
 import kotlin.io.path.isDirectory
 
 /**
@@ -101,8 +100,8 @@ class AffectedPathsOptions {
         internal set
 
     @Option(
-        names = ["--changed-files"],
-        description = ["List of changed files to use instead of the Git diff"]
+        names = ["--changed-file", "-f"],
+        description = ["Changed files to use instead of the Git diff"]
     )
     var changedFiles: List<String> = emptyList()
         internal set
