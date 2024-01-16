@@ -2,8 +2,8 @@ name: 'Github Actions Gradle Task Avoidance'
 description: 'Configures Github Actions to perform Gradle tasks for Gradle projects that are affected'
 
 inputs:
-  gradle-tasks:
-    description: List of Gradle task names to run for all affected projects
+  gradle-args:
+    description: List of Gradle args to run for all affected projects
     required: true
     default: 'check'
   token:
