@@ -1,3 +1,5 @@
+name: Project Provider Publish
+
 on:
   push:
     tags:

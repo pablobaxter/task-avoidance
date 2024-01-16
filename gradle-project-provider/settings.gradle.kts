@@ -17,5 +17,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "com.frybits"
+rootProject.name = "project-provider"
 include(":project-provider")

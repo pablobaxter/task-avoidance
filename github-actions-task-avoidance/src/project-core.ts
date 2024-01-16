@@ -20,8 +20,8 @@
 import * as core from '@actions/core'
 import fs from 'fs'
 
-export function getGradleTasks(): string[] {
-  return core.getMultilineInput('gradle-tasks')
+export function getGradleArgs(): string[] {
+  return core.getMultilineInput('gradle-args')
 }
 
 export function isAutoInjectDisabled(): boolean {
