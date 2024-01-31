@@ -21,6 +21,7 @@ import * as github from '@actions/github'
 import * as tc from '@actions/tool-cache'
 import * as exec from '@actions/exec'
 import * as path from 'path'
+import {IS_WINDOWS} from './constants'
 
 class ProjectProviderAsset {
   projectProviderDownloadUrl: string
@@ -30,8 +31,6 @@ class ProjectProviderAsset {
     this.projectProviderVersion = version
   }
 }
-
-const IS_WINDOWS = process.platform === 'win32'
 
 export async function runProjectProvider(params: {
   projectProviderVersion: string
