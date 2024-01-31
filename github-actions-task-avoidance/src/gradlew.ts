@@ -24,10 +24,9 @@
  * Source: https://github.com/gradle/gradle-build-action
  */
 
+import {IS_WINDOWS} from './constants'
 import * as path from 'path'
 import fs from 'fs'
-
-const IS_WINDOWS = process.platform === 'win32'
 
 export function wrapperScriptFilename(): string {
   return IS_WINDOWS ? './gradlew.bat' : './gradlew'
@@ -39,7 +38,7 @@ export function installScriptFilename(): string {
 
 export function gradleWrapperScript(buildRootDirectory: string): string {
   validateGradleWrapper(buildRootDirectory)
-  return wrapperScriptFilename()
+  return path.resolve(buildRootDirectory, wrapperScriptFilename())
 }
 
 function validateGradleWrapper(buildRootDirectory: string): void {
