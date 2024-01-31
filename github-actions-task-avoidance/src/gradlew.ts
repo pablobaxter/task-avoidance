@@ -28,17 +28,17 @@ import {IS_WINDOWS} from './constants'
 import * as path from 'path'
 import fs from 'fs'
 
-export function wrapperScriptFilename(): string {
-  return IS_WINDOWS ? './gradlew.bat' : './gradlew'
+export function gradleWrapperScript(buildRootDirectory: string): string {
+  validateGradleWrapper(buildRootDirectory)
+  return path.resolve(buildRootDirectory, wrapperScriptFilename())
 }
 
 export function installScriptFilename(): string {
   return IS_WINDOWS ? 'gradle.bat' : 'gradle'
 }
 
-export function gradleWrapperScript(buildRootDirectory: string): string {
-  validateGradleWrapper(buildRootDirectory)
-  return path.resolve(buildRootDirectory, wrapperScriptFilename())
+export function wrapperScriptFilename(): string {
+  return IS_WINDOWS ? './gradlew.bat' : './gradlew'
 }
 
 function validateGradleWrapper(buildRootDirectory: string): void {

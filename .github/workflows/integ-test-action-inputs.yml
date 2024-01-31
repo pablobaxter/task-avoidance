@@ -1,0 +1,36 @@
+name: Test action inputs
+
+on:
+  workflow_call:
+    inputs:
+      runner-os:
+        type: string
+        default: '["ubuntu-latest", "windows-latest", "macos-latest"]'
+      download-dist:
+        type: boolean
+        default: false
+
+env:
+  DOWNLOAD_DIST: ${{ inputs.download-dist }}
+
+jobs:
+  action-inputs:
+    strategy:
+      matrix:
+        os: ${{fromJSON(inputs.runner-os)}}
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v4
+    - name: Download distribution if required
+      uses: ./.github/actions/download-dist
+    - name: Invoke with output-files
+      uses: ./
+      with:
+        build-dir: gradle-project-provider
+        affected-projects-output-file: ./affected-projects.out
+        serialized-projects-output-file: ./serialized-projects.out
+    - name: Verify output files created
+      run: |
+        rm ./affected-projects.out
+        rm ./serialized-projects.out

@@ -1,0 +1,17 @@
+# Code snippet taken from https://github.com/gradle/gradle-build-action
+name: 'Build and upload distribution'
+# Builds the action distribution an uploads as an artifact for later download
+runs:
+  using: "composite"
+  steps: 
+    - name: Build distribution
+      shell: bash
+      working-directory: github-actions-task-avoidance
+      run: |
+        npm install
+        npm run compile
+    - name: Upload distribution
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: github-actions-task-avoidance/dist/

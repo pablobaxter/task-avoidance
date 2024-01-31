@@ -17,16 +17,22 @@
  * https://github.com/pablobaxter/task-avoidance
  */
 
+import * as execution from './execution'
+import * as core from './project-core'
+import * as gradle from './gradlew'
+
 export async function main(): Promise<void> {
+  const buildDir = core.getBuildDir()
+  const gradleExecutable = core.getGradleInstallationPath()
+  const gradleTasks = core.getGradleTasks()
+  execution.executeGradleBuild(gradleExecutable, buildDir, gradleTasks)
   // Check for cached results (affected-path if 'github.run_id' is found, serialized projects for same sha of gradle files and buildSrc directory)
   // If same run-id, just run gradle tasks (affected-paths are already found)
   // If same sha, run project provider with given serialized file
   // else just run project provider normally
-
   // cache affected-path and serialized projects
   // run gradle tasks for affected paths
-
-  //todo use serialized projects to run lint/ktlint or any other tasks that normally use Gradle but can be run faster without
+  // todo use serialized projects to run lint/ktlint or any other tasks that normally use Gradle but can be run faster without
 }
 
 main()

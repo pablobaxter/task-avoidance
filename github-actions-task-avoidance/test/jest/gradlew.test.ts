@@ -1,7 +1,7 @@
 import * as gradlew from '../../src/gradlew'
 import * as path from 'path'
 
-const mockIS_WINDOWS = jest.fn();
+const mockIS_WINDOWS = jest.fn()
 jest.mock('../../src/constants', () => ({
     get IS_WINDOWS() {
         return mockIS_WINDOWS()
@@ -9,7 +9,7 @@ jest.mock('../../src/constants', () => ({
 }))
 
 test('gradle wrapper is resolvable', async () => {
-    mockIS_WINDOWS.mockReturnValue(false);
+    mockIS_WINDOWS.mockReturnValue(false)
     var result = gradlew.gradleWrapperScript('../gradle-project-provider')
     expect(result).toBe(path.resolve('../gradle-project-provider/gradlew'))
 })
